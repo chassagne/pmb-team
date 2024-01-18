@@ -5,24 +5,6 @@
     <title>Our Team - PMB</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="bootstrap.min.css">
-    <script type="text/javascript">
-        !function () {
-            "use strict";
-            window.addEventListener("message", (function (event) {
-                if (event.data["datawrapper-height"] !== undefined) {
-                    var iframes = document.querySelectorAll("iframe");
-                    for (var key in event.data["datawrapper-height"]) {
-                        for (var i = 0; i < iframes.length; i++) {
-                            if (iframes[i].contentWindow === event.source) {
-                                var height = event.data["datawrapper-height"][key] + "px";
-                                iframes[i].style.height = height;
-                            }
-                        }
-                    }
-                }
-            }));
-        }();
-    </script>
 </head>
 
 <body>
@@ -538,6 +520,31 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function sendHeight() {
+            if (parent.postMessage) {
+                // replace #wrapper with element that contains 
+                // actual page content
+                var height = document.getElementById('wrapper').offsetHeight;
+                parent.postMessage(height, '*');
+            }
+        }
+
+        // Create browser compatible event handler.
+        var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+        // Listen for a message from the iframe.
+        eventer(messageEvent, function (e) {
+
+            if (isNaN(e.data)) return;
+
+            sendHeight();
+
+        },
+            false);
+    </script>
 </body>
 
 </html>
