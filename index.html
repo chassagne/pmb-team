@@ -523,15 +523,15 @@
     <script type="text/javascript">
         function sendHeight() {
             var height = document.documentElement.scrollHeight;
-            console.log("Sending height: " + height);
             window.parent.postMessage({
-                'messageType': 'setHeight',
-                'height': height
+                'datawrapper-height': {
+                    '0': height
+                }
             }, '*');
         }
 
         window.onload = sendHeight;
-        window.onresize = sendHeight; // Optional: if you want to update height when window is resized
+        window.onresize = sendHeight;
     </script>
 </body>
 
