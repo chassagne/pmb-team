@@ -12,17 +12,30 @@
         <script src="https://public.flourish.studio/resources/embed.js"></script>
     </div>
     <script type="text/javascript">
+        var lastHeight = 0, newHeight, timer;
+
         function sendHeight() {
-            var height = document.documentElement.scrollHeight;
-            window.parent.postMessage({
-                'datawrapper-height': {
-                    '0': height
-                }
-            }, '*');
+            newHeight = document.documentElement.scrollHeight;
+            if (newHeight !== lastHeight) {
+                window.parent.postMessage({
+                    'datawrapper-height': {
+                        '0': newHeight
+                    }
+                }, '*');
+                lastHeight = newHeight;
+            }
         }
 
         window.onload = sendHeight;
         window.onresize = sendHeight;
+
+        // Periodically check for height changes
+        timer = setInterval(sendHeight, 1000); // Check every 1000 milliseconds (1 second)
+
+        // Clear the interval when the window is unloaded
+        window.onunload = function () {
+            clearInterval(timer);
+        };
     </script>
 </body>
 
