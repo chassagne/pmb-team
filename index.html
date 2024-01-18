@@ -523,6 +523,7 @@
     <script type="text/javascript">
         function sendHeight() {
             var height = document.documentElement.scrollHeight;
+            console.log("Sending height: " + height);
             window.parent.postMessage({
                 'messageType': 'setHeight',
                 'height': height
