@@ -520,18 +520,17 @@
             </div>
         </div>
     </div>
-    <script type='text/javascript' src="js/jquery.min.js"></script>
-    <script type='text/javascript'>
-        // Size the parent iFrame
-        function iframeResize() {
-            var height = $('body').outerHeight(); // IMPORTANT: If body's height is set to 100% with CSS this will not work.
-            parent.postMessage("resize::" + height, "*");
+    <script type="text/javascript">
+        function sendHeight() {
+            var height = document.documentElement.scrollHeight;
+            window.parent.postMessage({
+                'messageType': 'setHeight',
+                'height': height
+            }, '*');
         }
 
-        $(document).ready(function () {
-            // Resize iframe
-            setInterval(iframeResize, 1000);
-        });
+        window.onload = sendHeight;
+        window.onresize = sendHeight; // Optional: if you want to update height when window is resized
     </script>
 </body>
 
